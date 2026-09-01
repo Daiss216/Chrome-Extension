@@ -7,19 +7,19 @@
     <title>Globle Entry Drop</title>
     <link rel="stylesheet" href="bulma.min.css" />
 
-    <!-- FIXES THE SHAKING JITTER LOOP -->
+    <!-- Fixed and stable width, solid structural height, prevent tiny responsive scrollbars -->
     <style>
       html,
       body {
-        width: 320px; /* Forces a fixed, stable width */
-        min-height: 200px; /* Gives it a solid structural height base */
-        overflow-x: hidden; /* Prevents tiny responsive scrollbars from popping in */
+        width: 320px;
+        min-height: 200px;
+        overflow-x: hidden;
       }
     </style>
   </head>
   <body>
-    <div class="p-4">
-      <h1 class="title is-4">Globle Entry Drop</h1>
+    <div class="p-3">
+      <h1 class="title is-3">Globle Entry Drop</h1>
 
       <div class="field">
         <label class="label">Status</label>
@@ -27,5 +27,43 @@
         <span class="tag is-danger">Stopped</span>
       </div>
     </div>
+
+    <div class="p-3">
+      <div class="field">
+        <label class="label">Location ID</label>
+        <div class="select">
+          <select id="locationId"></select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="label">Start Date</label>
+        <div class="control">
+          <input type="date" class="input" id="startdate" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="label">End Date</label>
+        <div class="control">
+          <input type="date" class="input" id="enddate" />
+        </div>
+      </div>
+    </div>
+
+    <div class="p-3">
+      <div class="p-2">
+        <button class="button is-success is-fullwidth" id="startButton">
+          Save & Start
+        </button>
+      </div>
+
+      <div class="p-2">
+        <button class="button is-danger is-fullwidth" id="stopButton">
+          Stop
+        </button>
+      </div>
+    </div>
   </body>
+  <script src="popup.js"></script>
 </html>
