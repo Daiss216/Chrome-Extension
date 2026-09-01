@@ -6,10 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Globle Entry Drop</title>
     <link rel="stylesheet" href="bulma.min.css" />
+
+    <!-- FIXES THE SHAKING JITTER LOOP -->
+    <style>
+      html,
+      body {
+        width: 320px; /* Forces a fixed, stable width */
+        min-height: 200px; /* Gives it a solid structural height base */
+        overflow-x: hidden; /* Prevents tiny responsive scrollbars from popping in */
+      }
+    </style>
   </head>
   <body>
-    <div class="container m-3">
-      <h1 class="title">Globle Entry Drop</h1>
+    <div class="p-4">
+      <h1 class="title is-4">Globle Entry Drop</h1>
 
       <div class="field">
         <label class="label">Status</label>
