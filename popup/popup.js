@@ -8,7 +8,11 @@ const startButton = document.getElementById("startButton");
 const stopButton = document.getElementById("stopButton");
 
 startButton.onclick = function () {
-  console.log("Start date:", startDateElement.value);
+  if (startDateElement.value) {
+    console.log("Start Date Element:", startDateElement.value);
+  } else {
+    console.log("Start Date is Invalid!");
+  }
 };
 
 stopButton.onclick = function () {
