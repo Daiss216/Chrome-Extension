@@ -1,11 +1,8 @@
-// let data= {                    //objrct
-//     "event": 'onStop/onStart',
-//     "prefs": {                 //val in popup.html
-//         "locationId": '123',
-//         "startDate": "2026-09-02",
-//         "endDate": "2026-10-02"
-//     }
-// }
+import fetchLocation from "./api/fetchLocaton.js";
+
+chrome.runtime.onInstalled.addListener((detailes) => {
+  fetchLocation();
+});
 
 chrome.runtime.onMessage.addListener((data) => {
   const { event, prefs } = data; //destructuring
