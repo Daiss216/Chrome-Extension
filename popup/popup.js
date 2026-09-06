@@ -7,7 +7,39 @@ const endDateElement = document.getElementById("enddate");
 const startButton = document.getElementById("startButton");
 const stopButton = document.getElementById("stopButton");
 
+//Span listeners
+const runningSpan = document.getElementById("runningSpan");
+const stoppedSpan = document.getElementById("stoppedSpan");
+
+//helper methods
+const hideElement = (elem) => {
+  elem.style.display = "none";
+};
+
+const showElement = (elem) => {
+  elem.style.display = "";
+};
+
+const disabledElement = (elem) => {
+  elem.disabled = true;
+};
+
+const unableElement = (elem) => {
+  elem.disabled = false;
+};
+
+const handleOnStartState = () => {
+  showElement(runningSpan);
+  hideElement(stoppedSpan);
+};
+
+const handleOnStopState = () => {
+  hideElement(runningSpan);
+  showElement(stoppedSpan);
+};
+
 startButton.onclick = () => {
+  handleOnStartState();
   const prefs = {
     locationId: locationIdElement.value,
     startdate: startDateElement.value,
@@ -21,6 +53,7 @@ startButton.onclick = () => {
 };
 
 stopButton.onclick = () => {
+  handleOnStopState();
   chrome.runtime.sendMessage({ event: "onStop" });
 };
 
@@ -41,7 +74,11 @@ chrome.storage.local.get(
     if (enddate) {
       endDateElement.value = enddate;
     }
-    console.log("Running status: ", isRunning);
+    if (isRunning) {
+      handleOnStartState();
+    } else {
+      handleOnStopState();
+    }
   },
 );
 
