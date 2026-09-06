@@ -21,13 +21,19 @@ chrome.runtime.onMessage.addListener((data) => {
 
 const handleOnStop = () => {
   console.log("On Stop in background");
+  setRunningStatus(false);
   stopAlarm();
 };
 
 const handleOnStart = (prefs) => {
   console.log("prefs received: ", prefs);
   chrome.storage.local.set(prefs); //storing the preferences throgh storage chrome api
+  setRunningStatus(true);
   createAlarm();
+};
+
+const setRunningStatus = (isRunning) => {
+  chrome.storage.local.set({ isRunning });
 };
 
 const createAlarm = () => {

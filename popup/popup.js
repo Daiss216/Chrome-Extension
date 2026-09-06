@@ -26,9 +26,9 @@ stopButton.onclick = () => {
 
 //chrome storage API
 chrome.storage.local.get(
-  ["locationId", "startdate", "enddate", "locations"],
+  ["locationId", "startdate", "enddate", "locations", "isRunning"],
   (result) => {
-    const { locationId, startdate, enddate, locations } = result;
+    const { locationId, startdate, enddate, locations, isRunning } = result;
 
     setLocation(locations);
 
@@ -41,6 +41,7 @@ chrome.storage.local.get(
     if (enddate) {
       endDateElement.value = enddate;
     }
+    console.log("Running status: ", isRunning);
   },
 );
 
