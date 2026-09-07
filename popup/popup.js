@@ -11,6 +11,11 @@ const stopButton = document.getElementById("stopButton");
 const runningSpan = document.getElementById("runningSpan");
 const stoppedSpan = document.getElementById("stoppedSpan");
 
+//Error message
+const locationIdError = document.getElementById("locationIdError");
+const startDateError = document.getElementById("startDateError");
+const endDateError = document.getElementById("endDateError");
+
 //helper methods
 const hideElement = (elem) => {
   elem.style.display = "none";
@@ -20,36 +25,85 @@ const showElement = (elem) => {
   elem.style.display = "";
 };
 
-const disabledElement = (elem) => {
+const disableElement = (elem) => {
   elem.disabled = true;
 };
 
-const unableElement = (elem) => {
+const enableElement = (elem) => {
   elem.disabled = false;
 };
 
 const handleOnStartState = () => {
+  //span
   showElement(runningSpan);
   hideElement(stoppedSpan);
+
+  //buttons
+  disableElement(startButton);
+  enableElement(stopButton);
+
+  //inputs
+  disableElement(locationIdElement);
+  disableElement(startDateElement);
+  disableElement(endDateElement);
 };
 
 const handleOnStopState = () => {
+  //span
   hideElement(runningSpan);
   showElement(stoppedSpan);
+
+  //buttons
+  disableElement(stopButton);
+  enableElement(startButton);
+
+  //inputs
+  enableElement(locationIdElement);
+  enableElement(startDateElement);
+  enableElement(endDateElement);
+};
+
+//validating inputs
+const onStartValidation = () => {
+  if (!locationIdElement.value) {
+    showElement(locationIdError);
+  } else {
+    hideElement(locationIdError);
+  }
+
+  if (!startDateElement.value) {
+    showElement(startDateError);
+  } else {
+    hideElement(startDateError);
+  }
+
+  if (!endDateElement.value) {
+    showElement(endDateError);
+  } else {
+    hideElement(endDateError);
+  }
+
+  return (
+    locationIdElement.value && startDateElement.value && endDateElement.value
+  );
 };
 
 startButton.onclick = () => {
-  handleOnStartState();
-  const prefs = {
-    locationId: locationIdElement.value,
-    startdate: startDateElement.value,
-    enddate: endDateElement.value,
-    tzData:
-      locationIdElement.options[locationIdElement.selectedIndex].getAttribute(
-        "data-tz",
-      ), //give element itself
-  };
-  chrome.runtime.sendMessage({ event: "onStart", prefs });
+  const allFieldValid = onStartValidation();
+
+  if (allFieldValid) {
+    handleOnStartState();
+    const prefs = {
+      locationId: locationIdElement.value,
+      startdate: startDateElement.value,
+      enddate: endDateElement.value,
+      tzData:
+        locationIdElement.options[locationIdElement.selectedIndex].getAttribute(
+          "data-tz",
+        ), //give element itself
+    };
+    chrome.runtime.sendMessage({ event: "onStart", prefs });
+  }
 };
 
 stopButton.onclick = () => {
