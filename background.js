@@ -1,5 +1,9 @@
-import fetchLocation from "./api/fetchLocaton.js";
+import {fetchLocation} from "./api/fetchLocaton.js";
+import { fetchOpenSlot } from "./api/fetchOpenSlot.js";
+
 const ALARM_NAME = "ALARM";
+
+let catchPrefs = ();
 
 chrome.runtime.onInstalled.addListener((detailes) => {
   fetchLocation();
@@ -27,6 +31,7 @@ const handleOnStop = () => {
 
 const handleOnStart = (prefs) => {
   console.log("prefs received: ", prefs);
+  
   chrome.storage.local.set(prefs); //storing the preferences throgh storage chrome api
   setRunningStatus(true);
   createAlarm();
