@@ -1,3 +1,5 @@
+import { handleNotification } from "../lib/handleNotification.js";
+
 //fetch list of open interview slots at a loc in a given timeperiod
 export const fetchOpenSlot = (result) => {
   console.log(result);
@@ -7,6 +9,6 @@ export const fetchOpenSlot = (result) => {
   fetch(appointmentUrl)
     .then((response) => response.json())
     .then((data) => data.filter((slot) => slot.active > 0))
-    .then((data) => console.log(data))
+    .then((data) => handleNotification(data))
     .catch((error) => console.log(error));
 };
