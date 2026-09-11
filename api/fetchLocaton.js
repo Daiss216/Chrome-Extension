@@ -1,7 +1,7 @@
 const LOCATION_ENDPOINT =
   "https://ttp.cbp.dhs.gov/schedulerapi/locations/?temporary=false&inviteOnly=false&operational=true&serviceName=Global%20Entry";
 
-export default function fetchLocation() {
+export const fetchLocation = () => {
   fetch(LOCATION_ENDPOINT) //fetch the location using fetch api
     .then((response) => response.json())
     .then((data) => {
@@ -19,4 +19,4 @@ export default function fetchLocation() {
       //if any error occured
       console.log(error);
     });
-}
+};
