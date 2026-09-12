@@ -77,6 +77,6 @@ const handledOpenSlots = (openSlots) => {
   ) {
     firstAppointTimestamp = openSlots[0].timestamp;
     //create Notification
-    createNotification(openSlots[0]);
+    createNotification(openSlots[0], openSlots.length, cachedPrefs);
   }
 };
