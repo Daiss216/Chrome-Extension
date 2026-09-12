@@ -1,9 +1,11 @@
 import { fetchLocation } from "./api/fetchLocaton.js";
 import { fetchOpenSlot } from "./api/fetchOpenSlot.js";
+import { createNotification } from "./lib/createNotification.js";
 
 const ALARM_NAME = "ALARM";
 
 let cachedPrefs = {};
+let firstAppointTimestamp = null;
 
 chrome.runtime.onInstalled.addListener((detailes) => {
   fetchLocation();
@@ -28,6 +30,7 @@ const handleOnStop = () => {
   setRunningStatus(false);
   stopAlarm();
   cachedPrefs = {};
+  firstAppointTimestamp = null; //to empty it
 };
 
 const handleOnStart = (prefs) => {
@@ -46,6 +49,8 @@ const createAlarm = () => {
   chrome.alarms.get(ALARM_NAME, (existingAlarm) => {
     //to avoid overlapping
     if (!existingAlarm) {
+      //immediately run the job
+      openSlotJob();
       chrome.alarms.create(ALARM_NAME, { periodInMinutes: 1.0 });
     }
   });
@@ -57,5 +62,21 @@ const stopAlarm = () => {
 
 chrome.alarms.onAlarm.addListener(() => {
   console.log("OnAlarm scheduled code runnning...");
-  fetchOpenSlot(cachedPrefs);
+  openSlotJob();
 });
+
+const openSlotJob = () => {
+  fetchOpenSlot(cachedPrefs).then((data) => handledOpenSlots(data));
+};
+
+const handledOpenSlots = (openSlots) => {
+  if (
+    openSlots &&
+    openSlots.length > 0 &&
+    openSlots[0].timestamp != firstAppointTimestamp
+  ) {
+    firstAppointTimestamp = openSlots[0].timestamp;
+    //create Notification
+    createNotification(openSlots[0]);
+  }
+};
