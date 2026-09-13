@@ -7,8 +7,10 @@ const ALARM_NAME = "ALARM";
 let cachedPrefs = {};
 let firstAppointTimestamp = null;
 
+//CHROME API LISTENERS
 chrome.runtime.onInstalled.addListener((detailes) => {
   fetchLocation();
+  handleOnStop();
 });
 
 chrome.runtime.onMessage.addListener((data) => {
@@ -23,6 +25,17 @@ chrome.runtime.onMessage.addListener((data) => {
     default:
       break;
   }
+});
+
+chrome.notifications.onClicked.addListener(() => {
+  chrome.tabs.create({
+    url: "https://ttp.cbp.dhs.gov/schedulerui/schedule-interview/location?lang=en&vo=true&returnUrl=ttp-external&service=up",
+  });
+});
+
+chrome.alarms.onAlarm.addListener(() => {
+  console.log("OnAlarm scheduled code runnning...");
+  openSlotJob();
 });
 
 const handleOnStop = () => {
@@ -59,11 +72,6 @@ const createAlarm = () => {
 const stopAlarm = () => {
   chrome.alarms.clearAll();
 };
-
-chrome.alarms.onAlarm.addListener(() => {
-  console.log("OnAlarm scheduled code runnning...");
-  openSlotJob();
-});
 
 const openSlotJob = () => {
   fetchOpenSlot(cachedPrefs).then((data) => handledOpenSlots(data));
